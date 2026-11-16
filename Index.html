@@ -1,0 +1,703 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Una vida en Chile | Simulador social</title>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --navy: #172c3d;
+  --cream: #f7f4ed;
+  --gold: #d6aa61;
+  --terracotta: #bd7058;
+  --green: #667d70;
+  --white: #fff;
+  --muted: #71808a;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--navy);
+  font-family: 'DM Sans', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+nav {
+  padding: 19px 7%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--navy);
+  color: white;
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 23px;
+  font-weight: 700;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-size: 13px;
+  margin-left: 25px;
+}
+
+.hero {
+  min-height: 570px;
+  display: flex;
+  align-items: center;
+  padding: 75px 9%;
+  color: white;
+  background:
+    linear-gradient(90deg,rgba(15,34,48,.93),rgba(15,34,48,.35)),
+    url('https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1800&q=85')
+    center/cover;
+}
+
+.hero-content { max-width: 650px; }
+
+.eyebrow {
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+h1 {
+  font-family: 'Playfair Display',serif;
+  font-size: clamp(48px,7vw,78px);
+  line-height: 1.05;
+  margin: 22px 0;
+}
+
+.hero p {
+  color: #e0e6e9;
+  font-size: 17px;
+  line-height: 1.8;
+  max-width: 550px;
+}
+
+.primary-btn {
+  border: 0;
+  background: var(--gold);
+  color: var(--navy);
+  padding: 16px 27px;
+  border-radius: 5px;
+  font-weight: 800;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 22px;
+  transition: .2s;
+}
+
+.primary-btn:hover {
+  background: white;
+  transform: translateY(-2px);
+}
+
+section {
+  padding: 75px 8%;
+}
+
+.section-heading {
+  text-align: center;
+  max-width: 650px;
+  margin: 0 auto 45px;
+}
+
+h2 {
+  font-family: 'Playfair Display',serif;
+  font-size: 37px;
+  margin: 12px 0;
+}
+
+.section-heading p {
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 23px;
+}
+
+.info-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 5px 25px #172c3d0c;
+}
+
+.info-card img {
+  width: 100%;
+  height: 210px;
+  object-fit: cover;
+}
+
+.info-card div { padding: 22px; }
+
+.info-card h3 { margin-top: 0; }
+
+.info-card p {
+  color: var(--muted);
+  line-height: 1.7;
+  font-size: 14px;
+}
+
+.game-section {
+  background: #eae7df;
+}
+
+.game {
+  max-width: 900px;
+  margin: auto;
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 15px 45px #172c3d16;
+}
+
+.game-header {
+  background: var(--navy);
+  color: white;
+  padding: 27px 32px;
+}
+
+.game-header span {
+  color: var(--gold);
+  font-size: 11px;
+  letter-spacing: 2px;
+  font-weight: 700;
+}
+
+.progress {
+  height: 5px;
+  background: #405466;
+  margin-top: 18px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+#progressBar {
+  height: 100%;
+  width: 0%;
+  background: var(--gold);
+  transition: .3s;
+}
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 20px 30px;
+  background: #f7f5ef;
+}
+
+.stat {
+  flex: 1;
+  min-width: 120px;
+  background: white;
+  padding: 13px;
+  border-radius: 7px;
+  border: 1px solid #e7e4dc;
+}
+
+.stat small {
+  display: block;
+  color: var(--muted);
+  font-size: 11px;
+  margin-bottom: 5px;
+}
+
+.stat strong { font-size: 14px; }
+
+.game-body { padding: 35px; }
+
+.game-body h2 {
+  font-size: 31px;
+  margin-top: 0;
+}
+
+.description {
+  color: var(--muted);
+  line-height: 1.8;
+  margin-bottom: 25px;
+}
+
+.choices {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 15px;
+}
+
+.choice {
+  background: white;
+  color: var(--navy);
+  border: 1px solid #dcdedc;
+  border-radius: 9px;
+  padding: 19px;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  transition: .2s;
+}
+
+.choice:hover:not(:disabled) {
+  border-color: var(--gold);
+  background: #faf5e9;
+  transform: translateY(-3px);
+}
+
+.choice:disabled {
+  opacity: .4;
+  cursor: not-allowed;
+}
+
+.choice strong {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 15px;
+}
+
+.choice small {
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+#message {
+  margin-top: 25px;
+  padding: 20px;
+  background: #f5f2e9;
+  border-left: 4px solid var(--gold);
+  border-radius: 5px;
+  line-height: 1.8;
+  display: none;
+}
+
+.reflection {
+  background: var(--navy);
+  color: white;
+  text-align: center;
+}
+
+.reflection h2 { color: var(--gold); }
+
+.reflection p {
+  max-width: 650px;
+  margin: auto;
+  line-height: 1.9;
+  color: #d0d9df;
+}
+
+footer {
+  padding: 28px;
+  background: #102333;
+  color: #aab8c1;
+  text-align: center;
+  font-size: 12px;
+}
+
+@media(max-width:700px) {
+  .info-grid { grid-template-columns: 1fr; }
+  .choices { grid-template-columns: 1fr; }
+  nav a { margin-left: 10px; font-size: 11px; }
+  .hero { min-height: 500px; }
+  .game-body { padding: 23px; }
+  section { padding: 55px 6%; }
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <div class="logo">Una vida en Chile.</div>
+  <div>
+    <a href="#contexto">El contexto</a>
+    <a href="#juego">El simulador</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-content">
+    <div class="eyebrow">Sociedad · Educación · Oportunidades</div>
+    <h1>¿Dónde naces puede determinar dónde llegas.</h1>
+    <p>
+      Chile es un país de oportunidades, pero no todos comienzan
+      desde el mismo lugar. Descubre cómo la educación, el
+      trabajo y el origen familiar pueden influir en tu futuro.
+    </p>
+    <button class="primary-btn"
+      onclick="document.getElementById('juego').scrollIntoView()">
+      EXPLORAR MI HISTORIA →
+    </button>
+  </div>
+</header>
+
+<section id="contexto">
+  <div class="section-heading">
+    <div class="eyebrow">Comprender la desigualdad</div>
+    <h2>Dos realidades, un mismo país.</h2>
+    <p>
+      Las oportunidades en Chile están relacionadas con las
+      condiciones económicas y sociales en las que nace cada persona.
+    </p>
+  </div>
+
+  <div class="info-grid">
+
+    <div class="info-card">
+      <img src="https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=800&q=80">
+      <div>
+        <h3>El lugar donde naces</h3>
+        <p>
+          El ingreso familiar puede determinar el acceso a
+          mejores viviendas, servicios, conexiones y oportunidades.
+        </p>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=800&q=80">
+      <div>
+        <h3>El acceso a la educación</h3>
+        <p>
+          La calidad y las oportunidades educativas pueden
+          influir en el futuro académico y profesional.
+        </p>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80">
+      <div>
+        <h3>La movilidad social</h3>
+        <p>
+          Ascender socialmente no depende únicamente del esfuerzo
+          individual. También influyen las oportunidades disponibles.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="game-section" id="juego">
+  <div class="section-heading">
+    <div class="eyebrow">Tu historia comienza aquí</div>
+    <h2>Una vida en Chile</h2>
+    <p>
+      Toma decisiones, enfrenta diferentes circunstancias y
+      descubre cómo evoluciona tu posición social.
+    </p>
+  </div>
+
+  <div class="game">
+
+    <div class="game-header">
+      <span>SIMULADOR DE MOVILIDAD SOCIAL</span>
+      <div class="progress">
+        <div id="progressBar"></div>
+      </div>
+    </div>
+
+    <div class="stats" id="stats" style="display:none">
+      <div class="stat">
+        <small>RECURSOS FAMILIARES</small>
+        <strong id="money"></strong>
+      </div>
+      <div class="stat">
+        <small>EDUCACIÓN</small>
+        <strong id="education"></strong>
+      </div>
+      <div class="stat">
+        <small>ORIGEN</small>
+        <strong id="social"></strong>
+      </div>
+    </div>
+
+    <div class="game-body">
+      <h2 id="title">Tu vida comienza aquí</h2>
+      <p class="description" id="description">
+        Nacer en Chile significa comenzar con determinadas
+        oportunidades. ¿Qué camino vas a recorrer?
+      </p>
+      <div class="choices" id="choices">
+        <button class="primary-btn" onclick="startGame()">
+          COMENZAR UNA VIDA →
+        </button>
+      </div>
+      <div id="message"></div>
+    </div>
+
+  </div>
+</section>
+
+<section class="reflection">
+  <div class="eyebrow">La pregunta final</div>
+  <h2>¿Es suficiente el esfuerzo individual?</h2>
+  <p>
+    Si dos personas toman decisiones similares, pero comienzan
+    sus vidas con recursos y oportunidades diferentes,
+    ¿tendrán las mismas posibilidades de éxito?
+    Reflexiona sobre el papel que desempeñan la desigualdad
+    y el origen socioeconómico en la sociedad chilena.
+  </p>
+</section>
+
+<footer>
+  UNA VIDA EN CHILE · Obra digital interactiva sobre desigualdad social.
+  <br><br>
+  Los escenarios económicos son ficticios y simplifican
+  realidades sociales complejas.
+</footer>
+
+<script>
+let player = {};
+
+function resetPlayer() {
+  player = {
+    origin: "",
+    money: 0,
+    access: 0,
+    education: "Ninguna",
+    educationScore: 0,
+    income: 0,
+    job: "",
+    housing: "",
+    savings: 0,
+    stage: 0
+  };
+}
+
+resetPlayer();
+
+function show(title, description, choices) {
+  document.getElementById("title").textContent = title;
+  document.getElementById("description").textContent = description;
+
+  const area = document.getElementById("choices");
+  area.innerHTML = "";
+
+  choices.forEach(choice => {
+    const b = document.createElement("button");
+    b.className = "choice";
+    b.disabled = choice.disabled || false;
+
+    const strong = document.createElement("strong");
+    strong.textContent = choice.label;
+    b.appendChild(strong);
+
+    const small = document.createElement("small");
+    small.textContent = choice.detail || "";
+    b.appendChild(small);
+
+    b.onclick = choice.action;
+    area.appendChild(b);
+  });
+
+  document.getElementById("message").style.display = "none";
+  updateStats();
+}
+
+function updateStats() {
+  const visible = player.stage > 0;
+  document.getElementById("stats").style.display =
+    visible ? "flex" : "none";
+
+  document.getElementById("money").textContent =
+    "$" + player.money.toLocaleString("es-CL");
+
+  document.getElementById("education").textContent =
+    player.education;
+
+  document.getElementById("social").textContent =
+    player.origin;
+
+  document.getElementById("progressBar").style.width =
+    (player.stage * 25) + "%";
+}
+
+function startGame() {
+  resetPlayer();
+
+  show("¿En qué familia naciste?",
+    "Tu punto de partida influye en tus oportunidades. Selecciona tu contexto familiar.",
+    [
+      {label:"Familia de bajos ingresos",
+       detail:"Recursos limitados y mayores barreras económicas.",
+       action:()=>origin("Bajos ingresos",100000,0)},
+
+      {label:"Familia de clase media",
+       detail:"Acceso moderado a recursos y oportunidades.",
+       action:()=>origin("Clase media",700000,1)},
+
+      {label:"Familia de altos ingresos",
+       detail:"Mayor acceso a recursos, redes y alternativas educativas.",
+       action:()=>origin("Altos ingresos",3000000,3)}
+    ]);
+}
+
+function origin(name,money,access) {
+  player.origin = name;
+  player.money = money;
+  player.access = access;
+  player.stage = 1;
+
+  show("Tu educación",
+    "Debes decidir cómo comenzar tu formación. Algunas alternativas requieren más recursos familiares.",
+    [
+      {label:"Educación pública",
+       detail:"Una alternativa financiada principalmente por el Estado.",
+       action:()=>education("Educación pública",2)},
+
+      {label:"Educación técnica",
+       detail:"Formación profesional orientada al mercado laboral.",
+       action:()=>education("Educación técnica",3)},
+
+      {label:"Educación privada",
+       detail:"Acceso a una alternativa con mayores costos.",
+       disabled:player.access < 2,
+       action:()=>education("Educación privada",4)},
+
+      {label:"Dejar los estudios y trabajar",
+       detail:"Comenzar a generar ingresos inmediatamente.",
+       action:()=>education("Sin educación superior",0)}
+    ]);
+}
+
+function education(name,score) {
+  player.education = name;
+  player.educationScore = score;
+  player.stage = 2;
+
+  if(score === 0) {
+    player.income = 450000;
+    player.job = "Trabajo no calificado";
+    player.stage = 3;
+    adultLife();
+    return;
+  }
+
+  show("El mercado laboral",
+    "Tu formación puede abrir diferentes puertas. Elige un camino profesional.",
+    [
+      {label:"Servicios y comercio",
+       detail:"Ingreso mensual simulado: $650.000",
+       action:()=>work("Servicios y comercio",650000)},
+
+      {label:"Trabajo técnico",
+       detail:"Ingreso mensual simulado: $1.000.000",
+       action:()=>work("Trabajo técnico",1000000)},
+
+      {label:"Profesión universitaria",
+       detail:"Ingreso mensual simulado: $1.800.000",
+       disabled:score < 4,
+       action:()=>work("Profesión universitaria",1800000)},
+
+      {label:"Emprender un negocio",
+       detail:"Ingreso mensual simulado: $800.000",
+       action:()=>work("Emprendedor",800000)}
+    ]);
+}
+
+function work(job,income) {
+  player.job = job;
+  player.income = income;
+  player.stage = 3;
+  adultLife();
+}
+
+function adultLife() {
+  show("Tu vida adulta",
+    "Ahora debes decidir cómo administrar tus recursos y construir tu futuro.",
+    [
+      {label:"Vivienda económica y ahorro",
+       detail:"Gastas menos y reservas más dinero.",
+       action:()=>housing("Vivienda económica",100000,200000)},
+
+      {label:"Barrio de clase media",
+       detail:"Mayor gasto mensual en vivienda.",
+       action:()=>housing("Barrio de clase media",300000,50000)},
+
+      {label:"Sector acomodado",
+       detail:"Vivienda de mayor costo.",
+       disabled:player.money < 1000000,
+       action:()=>housing("Sector acomodado",700000,0)},
+
+      {label:"Invertir en formación",
+       detail:"Destinas recursos a mejorar tus oportunidades.",
+       action:()=>housing("Invertir en formación",250000,-100000)}
+    ]);
+}
+
+function housing(name,expense,saving) {
+  player.housing = name;
+  player.savings = Math.max(0,player.money-expense+saving);
+  player.stage = 4;
+  finalResult();
+}
+
+function finalResult() {
+  let wealth = player.savings + player.income*3;
+
+  let score = player.educationScore*2 +
+    (player.income>=1500000 ? 3 :
+     player.income>=800000 ? 2 : 1) +
+    (wealth>=4000000 ? 2 : 0);
+
+  let socialClass =
+    score>=10 ? "Clase alta" :
+    score>=6 ? "Clase media" : "Clase trabajadora";
+
+  let mobility =
+    player.origin==="Bajos ingresos" && score>=6
+      ? "Experimentaste movilidad social ascendente."
+      : player.origin==="Altos ingresos" && score<10
+      ? "Tu posición social descendió respecto de tu origen."
+      : "Tu trayectoria estuvo influida por tu punto de partida.";
+
+  show("El resultado de tu vida",
+    "Tus decisiones han construido una trayectoria social. Aquí puedes descubrir cómo terminó tu historia.",
+    [
+      {label:"COMENZAR OTRA VIDA",
+       detail:"Prueba un punto de partida diferente.",
+       action:startGame}
+    ]);
+
+  const message = document.getElementById("message");
+  message.style.display = "block";
+
+  message.innerHTML = `
+    <h3>Tu historia</h3>
+    <p><strong>Origen familiar:</strong> ${player.origin}</p>
+    <p><strong>Educación:</strong> ${player.education}</p>
+    <p><strong>Trabajo:</strong> ${player.job}</p>
+    <p><strong>Ingreso mensual:</strong>
+    $${player.income.toLocaleString("es-CL")}</p>
+    <p><strong>Vivienda:</strong> ${player.housing}</p>
+    <p><strong>Ahorros simulados:</strong>
+    $${player.savings.toLocaleString("es-CL")}</p>
+    <hr>
+    <h3>Clase social final: ${socialClass}</h3>
+    <p>${mobility}</p>
+    <p><strong>Reflexiona:</strong> ¿Fue tu esfuerzo individual
+    suficiente para superar las condiciones de tu nacimiento?</p>
+  `;
+}
+</script>
+
+</body>
+</html>
